@@ -1,9 +1,13 @@
 //import model Domain to query on
-const {verifyNameAndAdd, removeDomain} = require('./controllers/domainNames')
+const {verifyNameAndAdd, removeDomain} = require('./domainNames')
 
 const publishersDataBase = {
     publishers: require('../models/publishers.json'),
     setPublishers: (publishers) => this.publishers = publishers
+}
+
+const getAllPublishers = (req, res) => {
+    res.status(200).json(publishersDataBase.publishers)
 }
 
 //:GET
@@ -88,6 +92,7 @@ const deleteDomain = (req, res) => {
 }
 
 module.exports = {
+    getAllPublishers,
     getAllDomains,
     addNewDomain,
     editExistingDomain,
