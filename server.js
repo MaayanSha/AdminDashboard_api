@@ -7,6 +7,7 @@ const app = express()
 //load events module
 const cors = require('cors')
 const PORT = process.env.PORT || 3000
+const {initDomainNames} = require('./controllers/domainNames')
 // const connectDB = require('./config/dbConn')
 // const mongoose = require('mongoose')
 
@@ -14,6 +15,8 @@ const PORT = process.env.PORT || 3000
 
 //database
 connectDB();
+//add domain names to hashmap
+initDomainNames();
 
 //setup CORS
 app.use(cors())

@@ -1,26 +1,15 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt')
+const router = express.Router()
+const domainsController = require('../../controllers/domainsController')
+const {verifyPublisher, verifyDomain}  = require('../../controllers/publishersController')
 
-const domainSchema = new mongoose.Schema({
-    domain: {
-        type: String,
-        required: true,
-    },
-    mobileAds:  {
-        type:Number,
-        required: true,
-    },
-    desktopAds: {
-        type:Number,
-        required:true
-    },
-},
-{ timestamps: true }
-)
 
-userSchema.pre('save', async function (next){
-    //sanitize content
-    next()
-})
-
-module.exports = mongoose.model('User', userSchema, "user");
+//CRUD operations set up for the route "/" in the api
+//chaining the callbacks to avoid code repetition in controller:
+//first validating that the headers are ok, then moving the request over to the controller
+router.route('/')
+    .get(verifyPublisher, domainsController.getAllDomains)
+    .post(verifyPublisher,verifyDomain, domainsController.addNewDomain)
+    .patch(verifyPublisher, verifyDomain, domainsController.editExistingDomain)
+    .delete(verifyPublisher, domainsController.deleteDomain)
+    
+module.exports = router
