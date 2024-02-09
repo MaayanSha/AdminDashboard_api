@@ -46,13 +46,13 @@ app.all('*',(req,res)=>{
     }
 })
 
-//connect to mongoDB instance and then begin listening on port for requests
-mongoose.connection.once('open', ()=>{
-    console.log('Connected to DB');
-    app.listen(PORT, ()=>console.log(`server running on port ${PORT}`))
-})
-//log any errors to console
-mongoose.connection.on('error', (err)=>{
-    console.log(err);
-})
+// //connect to mongoDB instance and then begin listening on port for requests
+// mongoose.connection.once('open', ()=>{
+//     console.log('Connected to DB');
+//     app.listen(PORT, ()=>console.log(`server running on port ${PORT}`))
+// })
+// //log any errors to console
+// mongoose.connection.on('error', (err)=>{
+//     console.log(err);
+// })
 
