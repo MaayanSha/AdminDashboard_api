@@ -17,7 +17,7 @@ const getAllDomains = (req, res) => {
     //find the requested publisher object
     const domainList = publishersDataBase.publishers.find(obj => obj.publisher === publisherRequest)
     if (!domainList){
-        res.status(404).json({message: "Error: publisher name not found."})
+        return res.status(404).json({message: "Error: publisher name not found."})
     }
     res.status(200).json(domainList)
 }
@@ -30,14 +30,14 @@ const addNewDomain = (req, res) => {
     const isAvailable = verifyNameAndAdd(domainName)
     //if domain name already taken, return error
     if (!isAvailable){
-        res.status(409).json({message: "Error: domainName is unavailable."})
+        return res.status(409).json({message: "Error: domainName is unavailable."})
     }
     //create new domain object
     const newDomain = 
     {
         "domain": domainName,
-        "desktopAds": desktopAds,
-        "mobileAds": mobileAds
+        "desktopAds": Number(desktopAds),
+        "mobileAds": Number(mobileAds)
       }
     //find the location of the publisher in the db
     const publisherObjIndex = publishersDataBase.publishers.findIndex(obj => obj.publisher === publisher)
@@ -60,8 +60,8 @@ const editExistingDomain = (req, res) => {
     }
     const updatedDomain = {
         "domain": newDomain || domainName,
-        "desktopAds": desktopAds,
-        "mobileAds": mobileAds
+        "desktopAds": Number(desktopAds),
+        "mobileAds": Number(mobileAds)
     }
     //find the old domain object and update it
     //find the publisher location in the DB

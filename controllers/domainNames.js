@@ -20,7 +20,7 @@ const verifyNameAndAdd = (domain) => {
     if (occupiedDomains.has(domain)){
         return null
     }
-    occupiedDomains.set(domain) = true
+    occupiedDomains.set(domain, true)
     return domain
 }
 
