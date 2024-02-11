@@ -1,19 +1,22 @@
 const express = require('express')
 const router = express.Router()
 const domainsController = require('../../controllers/domainsController')
-const {verifyPublisher, verifyDomain}  = require('../../controllers/publishersController')
+const {verifyPublisherHeader, verifyPublisherBody, verifyDomain}  = require('../../controllers/publishersController')
 
+//chaining the callbacks to avoid code repetition in controller:
+//first validating that the required information is in the header (get/delete) or in body (post, patch)
+//then moving the request over to the controller
 
 //CRUD operations set up for the route "/" in the api
-
 router.route('/')
     .get(domainsController.getAllPublishers)
-//chaining the callbacks to avoid code repetition in controller:
-//first validating that the headers are ok, then moving the request over to the controller
+    .post(verifyPublisherBody, domainsController.addPublisher)
+
+//CRUD operations set up for the route "/publishers" in the api
 router.route('/publishers')
-    .get(verifyPublisher, domainsController.getAllDomains)
-    .post(verifyPublisher,verifyDomain, domainsController.addNewDomain)
-    .patch(verifyPublisher, verifyDomain, domainsController.editExistingDomain)
-    .delete(verifyPublisher, domainsController.deleteDomain)
+    .get(verifyPublisherHeader, domainsController.getAllDomains)
+    .post(verifyPublisherBody,verifyDomain, domainsController.addNewDomain)
+    .patch(verifyPublisherBody, verifyDomain, domainsController.editExistingDomain)
+    .delete(verifyPublisherHeader, domainsController.deleteDomain)
     
 module.exports = router

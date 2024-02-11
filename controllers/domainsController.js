@@ -79,7 +79,6 @@ const editExistingDomain = (req, res) => {
     const publisherObjIndex = publishersDataBase.publishers.findIndex(obj => obj.publisher === publisher)
     //find the old domain location in the DB under the publisher
     const domainIndex = publishersDataBase.publishers[publisherObjIndex].domains.findIndex(domain => domain.domain === oldDomain)
-    console.log(domainIndex)
     //set the updated domain properties
     publishersDataBase.publishers[publisherObjIndex].domains[domainIndex] = updatedDomain
 

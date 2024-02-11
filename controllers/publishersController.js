@@ -1,11 +1,24 @@
 
 //function for initial verification of publisher header field
-const verifyPublisher = (req, res, next) => {
+const verifyPublisherHeader = (req, res, next) => {
     //expect publisher in request headers
-    const publisherRequest = req.headers.publisher || req.body.publisher
+    const publisherRequest = req.headers.publisher
     //ensure request contains relevant fields
     if (!publisherRequest){
-        return res.status(400).json({message: "Invalid request: missing 'publisher' parameter."})
+        return res.status(400).json({message: "Invalid request: missing 'publisher' parameter in header."})
+    }
+
+    //if field exists, continue to the next function in chain
+    next();
+}
+
+//function for initial verification of publisher header field
+const verifyPublisherBody = (req, res, next) => {
+    //expect publisher in request headers
+    const publisherRequest = req.body.publisher
+    //ensure request contains relevant fields
+    if (!publisherRequest){
+        return res.status(400).json({message: "Invalid request: missing 'publisher' parameter in body."})
     }
 
     //if field exists, continue to the next function in chain
@@ -14,16 +27,17 @@ const verifyPublisher = (req, res, next) => {
 
 const verifyDomain = (req, res, next) => {
     //expect domain details in request body
-    const {domainName, desktopAds, mobileAds} = req.body
+    const {domain, desktopAds, mobileAds} = req.body
     //ensure request contains relevant fields
-    if (!domainName | !desktopAds | !mobileAds){
-        return res.status(400).json({message: "Invalid request: missing domain parameters (domainName, desktopAds, mobileAds)."})
+    if (domain === undefined | desktopAds === undefined | mobileAds === undefined){
+        return res.status(400).json({message: "Invalid request: missing domain parameters (domain, desktopAds, mobileAds)."})
     }
     //if fields exist, continue to the next function in chain
     next();
 }
 
 module.exports = {
-    verifyPublisher,
+    verifyPublisherHeader,
+    verifyPublisherBody,
     verifyDomain
 }
